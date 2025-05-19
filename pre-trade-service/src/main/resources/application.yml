@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: pre-trade-service
+  kafka:
+    bootstrap-servers: "127.0.0.1:29092"  # Replace with Confluent broker(s)
+    consumer:
+      group-id: pre-trade-service     # Unique consumer group ID
+      auto-offset-reset: earliest       # Start from the earliest message
+      enable-auto-commit: false         # Manual acknowledgment
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      properties:
+        schema.registry.url: "http://127.0.0.1:8081"
+        specific.avro.reader: true      # Use specific Avro class if applicable
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      properties:
+        schema.registry.url: "http://127.0.0.1:8081"
+
