@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Price Streaming WebSocket Client</title>
+</head>
+<body>
+<h2>WebSocket Price Streaming Test</h2>
+<div>
+    <label>User ID: </label>
+    <input type="text" id="userId" value="user-1"><br><br>
+
+    <label>Symbols (comma separated): </label>
+    <input type="text" id="symbols" value="AAPL,MSFT"><br><br>
+
+    <button onclick="connect()">Connect</button>
+    <button onclick="disconnect()">Disconnect</button>
+
+    <h3>Received Prices:</h3>
+    <pre style="white-space: pre-wrap" id="messages"></pre>
+</div>
+
+<script>
+    let socket;
+
+    function connect() {
+        const userId = document.getElementById('userId').value;
+        const symbols = document.getElementById('symbols').value.split(',').map(s => s.trim());
+
+        socket = new WebSocket('ws://localhost:8080/ws/prices');
+
+        socket.onopen = () => {
+            console.log('WebSocket connected');
+            socket.send(JSON.stringify({ userId, symbols }));
+        };
+
+        socket.onmessage = (event) => {
+            const messages = document.getElementById('messages');
+            messages.textContent += event.data + '';
+        };
+
+        socket.onclose = () => {
+            console.log('WebSocket disconnected');
+        };
+    }
+
+    function disconnect() {
+        if (socket) {
+            socket.close();
+        }
+    }
+</script>
+</body>
+</html>

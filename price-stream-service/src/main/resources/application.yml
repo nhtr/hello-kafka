@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: price-stream-service
+  kafka:
+    bootstrap-servers: "127.0.0.1:29092"  # Replace with Confluent broker(s)
+    consumer:
+      group-id: price-streaming-group
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringSerializer
+      value-deserializer: org.apache.kafka.common.serialization.StringSerializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
